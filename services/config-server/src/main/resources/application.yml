@@ -1,0 +1,20 @@
+# Config Server is running and loading the discovery-service.yml file.
+#Spring Cloud Config Server is the central place where all the configuration parameters of the applications are stored and maintained.
+#It typically backend by the source control system like Git.
+#It can serve the configuration across the multiple environments and applications.
+#Client microservices connect to the Config Server to fetch their configurations.
+#This setup ensures all the configurations are centralized, version-controlled and maintained in the secure and efficient manner.
+
+
+server:
+  port: 8888
+spring:
+  profiles:
+    active: native
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/configurations

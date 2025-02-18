@@ -1,0 +1,16 @@
+#Holds the information about all the client microservices
+#All clients register themselves with eureka server and use it to communicate with each other.
+
+
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+server:
+  port: 8761

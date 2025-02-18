@@ -1,0 +1,7 @@
+#Discovery Service (Eureka Server) is up and running on port 8761, and it's interacting with the Config Server.
+
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: discovery-service
