@@ -1,5 +1,6 @@
-package gr.siberian.ecommerce.domain;
+package gr.siberian.ecommerce.dto;
 
+import gr.siberian.ecommerce.domain.Address;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
