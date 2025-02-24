@@ -1,39 +1,36 @@
-package gr.siberian.ecommerce.product.domain;
+package gr.siberian.ecommerce.domain.orderline;
 
+import gr.siberian.ecommerce.domain.order.Order;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @AllArgsConstructor
-@NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
-@Builder
-public class Product  {
+@NoArgsConstructor
+@Table(name = "customer_line")
+public class OrderLine {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    private String name;
-
-    private String description;
-
-    private double availableQuantity;
-
-    private BigDecimal price;
-
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    private Integer productId;
+
+    private double quantity;
 }

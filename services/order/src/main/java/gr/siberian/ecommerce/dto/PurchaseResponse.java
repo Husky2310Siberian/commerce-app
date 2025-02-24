@@ -2,7 +2,7 @@ package gr.siberian.ecommerce.dto;
 
 import java.math.BigDecimal;
 
-public record ProductPurchaseResponse(
+public record PurchaseResponse (
 
         Integer productId,
 
