@@ -90,7 +90,7 @@ public class CustomerService {
     }
 
     public CustomerResponse findCustomerByName(String customerName) {
-        return customerRepository.findCustomerByName(customerName)
+        return customerRepository.findCustomerName(customerName)
                 .map(customerMapper::fromCustomer)
                 .orElseThrow(() -> new CustomerNotFoundException(format(
                         "No customer found with the provided lastname: %s" ,customerName))

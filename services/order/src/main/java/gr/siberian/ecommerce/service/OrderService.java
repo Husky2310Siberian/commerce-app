@@ -5,11 +5,14 @@ import gr.siberian.ecommerce.dto.OrderLineRequest;
 import gr.siberian.ecommerce.dto.OrderRequest;
 import gr.siberian.ecommerce.dto.PurchaseRequest;
 import gr.siberian.ecommerce.exceptions.BusinessException;
+import gr.siberian.ecommerce.kafka.OrderConfirmation;
+import gr.siberian.ecommerce.kafka.OrderProducer;
 import gr.siberian.ecommerce.mapper.OrderMapper;
 import gr.siberian.ecommerce.productproxy.ProductProxy;
 import gr.siberian.ecommerce.repository.IOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +23,10 @@ public class OrderService {
     private final IOrderRepository IOrderRepository;
     private final OrderMapper mapperOrder;
     private final OrderLineService orderLineService;
+    private final OrderProducer orderProducer;
 
-    public Integer createdOrder(OrderRequest request) {
+    @Transactional
+    public Integer createOrder(OrderRequest request) {
 
         //check customer if exists --> OpenFeign
         var customer = this.customerProxy.findCustomerById(request.customerId())
@@ -29,7 +34,7 @@ public class OrderService {
 
 
         //purchase products --> product microservice (RestTemplate)
-        this.productProxy.purchaseProducts(request.products());
+        var purchasedProducts = this.productProxy.purchaseProducts(request.products());
 
         //persist order
         var order = IOrderRepository.save(mapperOrder.toOrder(request));
@@ -46,10 +51,18 @@ public class OrderService {
                 );
         }
 
-        //start payment process
+        // todo start payment process
 
         //send order confirmation --> notification microservice
-
-        return null;
+        orderProducer.sendOrderConfirmation(
+                new OrderConfirmation(
+                        request.reference(),
+                        request.amount(),
+                        request.paymentMethod(),
+                        customer,
+                        purchasedProducts
+                )
+        );
+        return order.getId();
     }
 }

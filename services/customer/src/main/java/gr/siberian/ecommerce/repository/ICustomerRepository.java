@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ICustomerRepository extends MongoRepository<Customer, String> {
 
-    Optional<Customer> findCustomerByName(String customerName);
+    Optional<Customer> findCustomerName(String customerName);
 }
 
 
