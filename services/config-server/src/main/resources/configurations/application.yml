@@ -10,3 +10,7 @@
       config:
         override-system-properties: false # i dont want to override specific properties from .yml services
 
+  management:
+    tracing:
+      sampling:
+        probability: 1.0
